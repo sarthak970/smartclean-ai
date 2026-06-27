@@ -12,9 +12,33 @@ cur = conn.cursor()
 cur.execute("CREATE TABLE IF NOT EXISTS users(id INTEGER PRIMARY KEY, username TEXT, password TEXT)")
 conn.commit()
 
-@app.get("/")
+from fastapi.responses import HTMLResponse
+
+@app.get("/", response_class=HTMLResponse)
 def home():
-    return {"message":"Welcome to SmartClean AI"}
+    return """
+    <html>
+    <head>
+        <title>SmartClean AI</title>
+    </head>
+    <body style="font-family:Arial; text-align:center; margin-top:100px;">
+        <h1>🚀 SmartClean AI</h1>
+        <p>Upload messy datasets and get clean ML-ready data.</p>
+
+        <h2>Features</h2>
+        <p>✅ Remove duplicates</p>
+        <p>✅ Handle missing values</p>
+        <p>✅ Prepare data for Machine Learning</p>
+
+        <br>
+        <a href="/docs">
+            <button style="padding:15px;font-size:18px;">
+                Open Dashboard
+            </button>
+        </a>
+    </body>
+    </html>
+    """
 
 @app.post("/register")
 def register(username:str = Form(...), password:str = Form(...)):
