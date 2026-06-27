@@ -259,6 +259,37 @@ def home():
 </body>
 </html>
 """
+# Homepage
+@app.get("/")
+def home():
+    ...
+
+# Show Login Page
+@app.get("/login", response_class=HTMLResponse)
+def login_page():
+    with open("templates/login.html", "r", encoding="utf-8") as f:
+        return f.read()
+
+# Process Login Form
+@app.post("/login")
+def login(username: str = Form(...), password: str = Form(...)):
+    ...
+
+# Show Register Page
+@app.get("/register", response_class=HTMLResponse)
+def register_page():
+    with open("templates/register.html", "r", encoding="utf-8") as f:
+        return f.read()
+
+# Save User to Database
+@app.post("/register")
+def register(username: str = Form(...), password: str = Form(...)):
+    cur.execute(
+        "INSERT INTO users(username,password) VALUES (?,?)",
+        (username, password)
+    )
+    conn.commit()
+    return {"status": "registered"}
 
 
 @app.post("/register")
